@@ -26,7 +26,7 @@ class RecordRequestHandler {
 
     if (!records.length) {
       return makeHttpSuccess({
-        statusCode: 0,
+        statusCode: 200,
         successMessage: 'success',
         successData: records,
       });
@@ -51,7 +51,7 @@ class RecordRequestHandler {
     }
 
     return makeHttpSuccess({
-      statusCode: 0,
+      statusCode: 200,
       successMessage: 'success',
       successData: passedRecords,
     });

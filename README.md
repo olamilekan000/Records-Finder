@@ -68,7 +68,7 @@ This should return a list of records as shown below:
 ```sh
 {
   "code": 0,
-  "message": "success",
+  "msg": "success",
   "records": [
     {
       "key": "tQeCgNPH",

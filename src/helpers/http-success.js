@@ -4,7 +4,7 @@ const makeHttpSuccess = ({ statusCode, successMessage, successData = {} }) => ({
   },
   data: JSON.stringify({
     code: statusCode,
-    message: successMessage,
+    msg: successMessage,
     records: successData,
   }),
 });

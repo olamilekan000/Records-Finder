@@ -42,7 +42,7 @@ This will launch the server [node](https://nodejs.org/en/) process on port 9094
 
 ### Documentation
 
-To make a fetch records between a specified date, make a POST request to the endpoint using the payload as seen below
+To fetch records between a specified date, make a POST request to the endpoint below using the payload as seen below
 
 ```sh
 

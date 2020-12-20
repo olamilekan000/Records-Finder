@@ -24,13 +24,14 @@ class RecordRequestHandler {
     /**
      * Filter date with start date and end date, add a count field,
      * remove the fields that are not needed and return data based on the
-     * minCount, maxCount, and totalCount
+     * minCount, maxCount, and totalCount and then sort in an ascending order.
      */
     const records = await this.recordDbInteractor.fetchAllRecords([
       { $match: { createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) } } },
       { $addFields: { totalCount: { $sum: '$counts' } } },
       { $unset: ['counts', '_id', 'value'] },
       { $match: { totalCount: { $gt: minCount, $lt: maxCount } } },
+      { $sort : { totalCount : 1 } }
     ]);
 
     return makeHttpSuccess({

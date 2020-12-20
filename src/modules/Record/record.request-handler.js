@@ -21,10 +21,16 @@ class RecordRequestHandler {
       });
     }
 
-    // filter results with date interval and sum count in the array
+    /**
+     * Filter date with start date and end date, add a count field,
+     * remove the fields that are not needed and return data based on the
+     * minCount, maxCount, and totalCount
+     */
     const records = await this.recordDbInteractor.fetchAllRecords([
       { $match: { createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) } } },
       { $addFields: { totalCount: { $sum: '$counts' } } },
+      { $unset: ['counts', '_id', 'value'] },
+      { $match: { totalCount: { $gt: minCount, $lt: maxCount } } },
     ]);
 
     /*
@@ -39,24 +45,10 @@ class RecordRequestHandler {
       });
     }
 
-    const passedRecords = [];
-    // loop to retrieve records that is between min and max
-    for (let index = 0; index < records.length; index++) {
-      const element = records[index];
-      const { totalCount } = element;
-      if (totalCount > minCount && totalCount < maxCount) {
-        passedRecords.push({
-          key: element.key || element._doc.key,
-          createdAt: element.createdAt || element._doc.createdAt,
-          totalCount: element.totalCount || element._doc.totalCount,
-        });
-      }
-    }
-
     return makeHttpSuccess({
       statusCode: 0,
       successMessage: 'success',
-      successData: passedRecords,
+      successData: records,
     });
   }
 }

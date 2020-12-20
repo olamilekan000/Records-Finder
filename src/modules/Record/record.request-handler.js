@@ -7,6 +7,7 @@ class RecordRequestHandler {
   }
 
   async getAllRecords(httpRequest) {
+    // destructure request body
     const {
       body: {
         startDate, endDate, minCount, maxCount,
@@ -20,38 +21,40 @@ class RecordRequestHandler {
       });
     }
 
-    const records = await this.recordDbInteractor.fetchAllRecords({
-      createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) },
-    });
+    // filter results with date interval and sum count in the array
+    const records = await this.recordDbInteractor.fetchAllRecords([
+      { $match: { createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) } } },
+      { $addFields: { totalCount: { $sum: '$counts' } } },
+    ]);
 
+    /*
+    * If record does not exists,
+    * return empty array
+    */
     if (!records.length) {
       return makeHttpSuccess({
-        statusCode: 200,
+        statusCode: 0,
         successMessage: 'success',
         successData: records,
       });
     }
 
     const passedRecords = [];
-
+    // loop to retrieve records that is between min and max
     for (let index = 0; index < records.length; index++) {
       const element = records[index];
-      const { counts } = element;
-      const totalCount = counts.reduce((a, b) => a + b, 0);
-
+      const { totalCount } = element;
       if (totalCount > minCount && totalCount < maxCount) {
-        const newRecordObject = {
+        passedRecords.push({
           key: element.key || element._doc.key,
           createdAt: element.createdAt || element._doc.createdAt,
-          totalCount,
-        };
-
-        passedRecords.push(newRecordObject);
+          totalCount: element.totalCount || element._doc.totalCount,
+        });
       }
     }
 
     return makeHttpSuccess({
-      statusCode: 200,
+      statusCode: 0,
       successMessage: 'success',
       successData: passedRecords,
     });

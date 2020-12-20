@@ -1,4 +1,4 @@
-const Joi = require(".");
+const Joi = require('.');
 
 const fetchRecordsValidator = Joi.object({
   startDate: Joi.date()

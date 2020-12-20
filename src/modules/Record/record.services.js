@@ -4,7 +4,7 @@
 
 const recordServices = ({ RecordModel }) => {
   const fetchAllRecords = async (params = {}) => {
-    const records = await RecordModel.find(params);
+    const records = await RecordModel.aggregate(params);
     return records;
   };
 

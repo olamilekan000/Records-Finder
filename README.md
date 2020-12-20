@@ -44,11 +44,15 @@ This will launch the server [node](https://nodejs.org/en/) process on port 9094
 
 To fetch records between a specified date, make a POST request to the endpoint below using the payload as seen below
 
+- API Endpoint
+
 ```sh
 
   <BASE_URL>/api/v1/counts
 
 ```
+
+- Request Payload
 
 ```sh
   POST {

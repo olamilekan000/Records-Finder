@@ -7,8 +7,8 @@ const recordControllers = {
 
     record
       .getAllRecords(httpRequest)
-      .then(({ headers, statusCode, data }) => {
-        res.set(headers).status(statusCode).send(data);
+      .then(({ headers, data }) => {
+        res.set(headers).status(200).send(data);
       })
       .catch((e) => res
         .status(500)

@@ -33,18 +33,6 @@ class RecordRequestHandler {
       { $match: { totalCount: { $gt: minCount, $lt: maxCount } } },
     ]);
 
-    /*
-    * If record does not exists,
-    * return empty array
-    */
-    if (!records.length) {
-      return makeHttpSuccess({
-        statusCode: 0,
-        successMessage: 'success',
-        successData: records,
-      });
-    }
-
     return makeHttpSuccess({
       statusCode: 0,
       successMessage: 'success',
